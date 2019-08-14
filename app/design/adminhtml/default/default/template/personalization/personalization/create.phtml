@@ -1,0 +1,490 @@
+<style type="text/css">
+.progress-bar{
+ background: #00BB11;
+
+/* gecko based browsers */
+background: -moz-linear-gradient(right,#FFFF7F, #FF0000 );
+
+/* webkit based browsers */
+background: -webkit-gradient(linear, left top, left bottom, from(#FFFF7F), to(#FF0000));
+
+color: #000000; /* text colour (black) */
+
+}
+</style>
+<?php $formData= array()?>
+<?php if(Mage::registry('personalization_data')) : ?>
+<?php $formData = Mage::registry('personalization_data')->getData()?>
+<?php endif;?>
+<div style="" id="personalization_tabs_create_section_content">
+	<div class="entry-edit">
+    	<div class="entry-edit-head">
+    		<h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Progress Bar')?></h4>
+    			<div class="form-buttons"></div>
+		</div>
+    	<div class="fieldset ">
+    		<div class="hor-scroll">
+				<div class="form-list">
+            		<div class="progress-bar" style="width:0%;height:25px;float:left;" id="progressbar">
+						&nbsp;
+                    </div>
+					<div style="width:18%;height:25px;float:right;" id="progressbar_value">
+						Progress 0%
+                    </div>
+        		</div>
+            </div>
+        </div>
+		<div class="entry-edit-head">
+			<h4 class="icon-head head-edit-form fieldset-legend" id="personalization_info_current"><?php echo $this->__('Personalization information - Name')?></h4>
+			<div class="form-buttons">
+				<span id="personalization_prev" style="cursor:pointer;display:none;float:left;margin-right:20px;">
+					<a  onclick="showAjax('prev');" alt="Previous" title="Previous"><?php echo $this->__('<< Previous Step')?></a>
+				</span>
+				<span id="personalization_next" style="cursor:pointer;float:left;">
+					<a onclick="showAjax('next');" alt="Next" title="Next"><?php echo $this->__('Next Step >>')?></a>
+			</div>
+			<input type="hidden" name="currentstep" id="currentstep" value="1"/>
+		</div>
+		<div id="personalization_form" class="fieldset ">
+			<div class="hor-scroll">
+				<table cellspacing="0" class="form-list" style="min-width:580px;">
+					<tbody>
+						<tr id="personalization_step1" name="personalization_step1">
+							<td class="label"><label for="name"><?php echo $this->__('Name')?> <span class="required">*</span></label></td>
+							<td class="value">
+							<input type="text" class="required-entry input-text required-entry" value="<?php echo $formData['name']?>" name="name" id="name">            		</td>
+
+						
+						</tr>
+						<tr id="personalization_step2" style="display:none;" name="personalization_step2">
+							<td class="value">
+								<table>
+									<tr style="display:block;">
+										<td class="label"><label for="segmentation_type"><?php echo $this->__('Segmentation Type')?> <span class="required">*</span></label></td>
+										<td class="value">
+							
+											<select class="required-entry required-entry select" name="segmentation_type" id="segmentation_type" onchange="showSegmentationValues(this.value);">
+			
+								<?php   $options = Mage::getModel('personalization/segmentation')->getOptionArray();
+										foreach($options as $key => $value) :
+								?>		
+											<option <?php if($key==$formData['segmentation_type']) : ?>selected="selected"<?php endif;?> value="<?php echo $key?>"><?php echo $value?></option>
+									<?php endforeach;?>
+											</select>
+										 </td>
+									</tr>
+									<tr id="segmentation_values_tr_1" style="display:none;">
+										<td><table>
+										<?php $count=1;?>
+											<tr>
+												<td>
+													<button style="" onclick="addNewLocation()" value="1" class="scalable add add-select-row" type="button" title="Add New Value"><span><span><span><?php echo $this->__('Add New Value')?></span></span></span></button>
+											
+												</td>
+											</tr>
+<?php if(($formData['segmentation_type']==1) && $formData['segmentation_values']) :?>
+<?php $location = explode(",",$formData['segmentation_values']);?>
+<?php foreach($location as $value):?>
+<?php $loc = explode("::",$value);?> 
+<tr id="country_tr_<?php echo $count?>">
+												<td class="label"><label for="segmentation_values_1"><?php echo $this->__('Select Country')?> <span class="required">*</span></label></td>
+												<td class="value">
+													<?php $country = $this->getCountryList() ?>
+													<select class="required-entry select" id="country_<?php echo $count?>" name="country[]" onchange="showRegion(this.value,'<?php echo $count;?>');" id="country_<?php echo $count?>">
+														<?php foreach($country as $country):?>
+
+															<option <?php if($loc[0]==$country['value']): ?> selected <?php endif;?>value="<?php echo $country['value']?>"><?php if($country['label']!=1){echo $country['label'];}?></option>
+														<?php endforeach;?>
+													</select>
+												</td>
+												<td class="value">
+													<button style="" onclick="deleteLocation(this.value)" value="<?php echo $count;?>" class="scalable delete" type="button" title="Delete"><span><span><span><?php echo $this->__('Delete')?></span></span></span></button>
+												</td>
+											</tr>
+											<tr id="region_tr_<?php echo $count?>" <?php if(!$loc[1]):?>style="display:none;"<?php endif;?>>
+												<td class="label"><label for="segmentation_values_1"><?php echo $this->__('Select State')?> <span class="required">*</span></label></td>
+												<td class="value">
+													<?php $region = $this->getRegionCollection('US')?>
+													<select class="" id="region_<?php echo $count?>" name="region[]">
+														<?php foreach($region as $region):?>
+
+															<option <?php if($loc[1]==$region['name'] && $loc[1]): ?> selected <?php endif;?>value="<?php echo $region['name']?>"><?php echo $region['name']?></option>
+														<?php endforeach;?>
+													</select>
+												</td>
+											</tr>
+<?php $count++?>										
+<?php endforeach;?>
+<tr><td><input type="hidden" value="<?php echo $count-1;?>" id="segmentaion_hide_1"/></td></tr>
+<?php else:?>
+
+
+											<tr id="country_tr_<?php echo $count?>">
+												<td class="label"><label for="segmentation_values_1"><?php echo $this->__('Select Country')?> <span class="required">*</span></label></td>
+												<td class="value">
+													<?php $country = $this->getCountryList() ?>
+													<select class="" id="country_<?php echo $count?>" name="country[]" onchange="showRegion(this.value,'1');" id="country_<?php echo $count?>">
+														<?php foreach($country as $country):?>
+
+															<option value="<?php echo $country['value']?>"><?php if($country['label']!=1){echo $country['label'];}?></option>
+														<?php endforeach;?>
+													</select>
+												</td>
+											</tr>
+											<tr id="region_tr_<?php echo $count?>" style="display:none;">
+												<td class="label"><label for="segmentation_values_1"><?php echo $this->__('Select State')?> <span class="required">*</span></label></td>
+												<td class="value">
+													<?php $region = $this->getRegionCollection('US')?>
+													<select class="" id="region_<?php echo $count?>" name="region[]">
+														<?php foreach($region as $region):?>
+
+															<option value="<?php echo $region['name']?>"><?php echo $region['name']?></option>
+														<?php endforeach;?>
+													</select>
+												</td>
+											</tr>
+											<tr><td><input type="hidden" value="<?php echo $count;?>" id="segmentaion_hide_1"/></td></tr>
+				
+<?php endif;?>
+									</table></td></tr>	
+									<tr id="segmentation_values_tr_2" style="display:none;">
+										<td><table>
+										<?php $count=1;?>
+											<tr>
+												<td>
+													<button style="" onclick="addNewValueRow(this.value)" value="2" class="scalable add add-select-row" type="button" title="Add New Value"><span><span><span><?php echo $this->__('Add New Value')?></span></span></span></button>
+											
+												</td>
+											</tr>
+									<?php if(($formData['segmentation_type']==2) && $formData['segmentation_values']) :?>
+									<?php $keyword = explode(",",$formData['segmentation_values']);?>
+									
+									<?php foreach($keyword as $value):?>
+										
+										
+										<tr id="segmentation_default_2_<?php echo $count;?>">
+										<td class="label"><label for="segmentation_values_2"><?php echo $this->__('Segmentation Values')?> <span class="required">*</span></label></td>
+										<td class="value">
+										
+										
+											<input type="textfield" class="" name="segmentation_values_2[]" id="segmentation_values_2_<?php echo $count;?>" value="<?php echo $value?>">
+											
+										</td>
+										<td class="value">
+											<button style="" onclick="deleteRow(this.value)" value="2_<?php echo $count++;?>" class="scalable delete" type="button" title="Delete"><span><span><span><?php echo $this->__('Delete')?></span></span></span></button>
+											
+										</td>
+									</tr>
+									<?php endforeach;?>
+											<tr><td><input type="hidden" value="<?php echo $count-1;?>" id="segmentaion_hide_2"/></td></tr>
+									<?php else : ?>
+										<tr><td><input type="hidden" value="1" id="segmentaion_hide_2"/></td></tr>
+										<tr>
+										<td class="label"><label for="segmentation_values_1"><?php echo $this->__('Segmentation Values')?> <span class="required">*</span></label></td>
+										<td class="value">
+										
+										
+											<input type="textfield" class="" name="segmentation_values_2[]" id="segmentation_values_2_1" value="">
+											
+										</td>
+										
+										</tr>
+									<?php endif;?>	
+									</table></td></tr>
+									<tr id="segmentation_values_tr_3" style="display:none;">
+										<td><table>
+										<?php $count=1;?>
+											<tr>
+												<td>
+													<button style="" onclick="addNewValueRow(this.value)" value="3" class="scalable add add-select-row" type="button" title="Add New Value"><span><span><span><?php echo $this->__('Add New Value')?></span></span></span></button>
+											
+												</td>
+											</tr>
+									<?php if(($formData['segmentation_type']==3) && $formData['segmentation_values']) :?>
+									<?php $referer = explode(",",$formData['segmentation_values']);?>
+									
+									<?php foreach($referer as $value):?>
+										
+										
+										<tr id="segmentation_default_3_<?php echo $count;?>">
+										<td class="label"><label for="segmentation_values_3"><?php echo $this->__('Segmentation Values')?> <span class="required">*</span></label></td>
+										<td class="value">
+										
+										
+											<input type="textfield" class="" name="segmentation_values_3[]" id="segmentation_values_3_<?php echo $count;?>" value="<?php echo $value?>">
+											
+										</td>
+										<td>
+											<button style="" onclick="deleteRow(this.value)" value="3_<?php echo $count++;?>" class="scalable delete" type="button" title="Delete"><span><span><span><?php echo $this->__('Delete')?></span></span></span></button>
+											
+										</td>
+									</tr>
+									<?php endforeach;?>
+											<tr><td><input type="hidden" value="<?php echo $count-1;?>" id="segmentaion_hide_3"/></td></tr>
+									<?php else : ?>
+										<tr><td><input type="hidden" value="1" id="segmentaion_hide_3"/></td></tr>
+										<tr>
+										<td class="label"><label for="segmentation_values_3"><?php echo $this->__('Segmentation Values')?> <span class="required">*</span></label></td>
+										<td class="value">
+										
+										
+											<input type="textfield" class="" name="segmentation_values_3[]" id="segmentation_values_3_1" value="">
+											
+										</td>
+										
+										</tr>
+									<?php endif;?>	
+									</table></td></tr>
+									<tr id="segmentation_values_tr_7" style="display:none;">
+										<td><table>
+										<?php $count=1;?>
+											<tr>
+												<td>
+													<button style="" onclick="addNewValueRow(this.value)" value="7" class="scalable add add-select-row" type="button" title="Add New Value"><span><span><span><?php echo $this->__('Add New Value')?></span></span></span></button>
+											
+												</td>
+											</tr>
+									<?php if(($formData['segmentation_type']==7) && $formData['segmentation_values']) :?>
+									<?php $mail = explode(",",$formData['segmentation_values']);?>
+								
+									<?php foreach($mail as $value):?>
+										
+										
+										<tr id="segmentation_default_7_<?php echo $count;?>">
+										<td class="label"><label for="segmentation_values_7"><?php echo $this->__('Segmentation Values')?> <span class="required">*</span></label></td>
+										<td class="value">
+										
+										
+											<input type="textfield" class="" name="segmentation_values_7[]" id="segmentation_values_7_<?php echo $count;?>" value="<?php echo $value?>">
+											
+										</td>
+										<td>
+											<button style="" onclick="deleteRow(this.value)" value="7_<?php echo $count++;?>" class="scalable delete" type="button" title="Delete"><span><span><span><?php echo $this->__('Delete')?></span></span></span></button>
+											
+										</td>
+									</tr>
+									<?php endforeach;?>
+											<tr><td><input type="hidden" value="<?php echo $count-1;?>" id="segmentaion_hide_7"/></td></tr>
+									<?php else : ?>
+										<tr><td><input type="hidden" value="1" id="segmentaion_hide_7"/></td></tr>
+										<tr>
+										<td class="label"><label for="segmentation_values_7"><?php echo $this->__('Segmentation Values')?> <span class="required">*</span></label></td>
+										<td class="value">
+										
+										
+											<input type="textfield" class="" name="segmentation_values_7[]" id="segmentation_values_7_1" value="">
+											
+										</td>
+										
+										</tr>
+									<?php endif;?>	
+									</table></td></tr>
+									<tr id="segmentation_values_tr_4" style="display:none;">
+										<td class="label"><label for="segmentation_4"><?php echo $this->__('Segmentation Values')?> <span class="required">*</span></label></td>
+										<td class="value">
+											<select name="segmentation_values_4" id="segmentation_values_4" class="">
+											<option value=""></option>
+											<option value="1" <?php if($formData['segmentation_values']==1 && $formData['segmentation_type']==4) :?> selected <?php endif;?>><?php echo $this->__('Has visited the site previously')?></option>
+											<option value="2" <?php if($formData['segmentation_values']==2 && $formData['segmentation_type']==4) :?> selected <?php endif;?>><?php echo $this->__('Login customer')?></option>
+										</td>
+										
+									</tr>
+									
+									<?php $social = array("Facebook","Twitter","Google Plus","LinkedIn","Orkut")?>
+									<tr id="segmentation_values_tr_5" style="display:none;">
+										<td class="label"><label for="segmentation_values_5"><?php echo $this->__('Segmentation Values')?> <span class="required">*</span></label></td>
+										<td class="value">
+											<select name="segmentation_values_5[]" id="segmentation_values_5" class="" size="6" multiple="multiple">
+											<?php foreach($social as $social):?>
+											<option value="<?php echo $social?>" <?php if(strstr($formData['segmentation_values'],$social) && $formData['segmentation_type']==5) :?> selected <?php endif;?>><?php echo $social?></option>									<?php endforeach;?>
+										
+										</td>
+										
+									</tr>
+	 								
+									<?php $mobile = array ('Blazer','Palm','Handspring' ,'Nokia' ,'Kyocera','Samsung' ,'Motorola' ,'Smartphone','Windows CE' ,'Blackberry' ,'WAP' ,'SonyEricsson','PlayStation Portable','LG','MMP','OPWV','Symbian','EPOC','iPhone');?>
+									<tr id="segmentation_values_tr_6" style="display:none;">
+										<td class="label"><label for="segmentation_values"><?php echo $this->__('Segmentation Values')?> <span class="required">*</span></label></td>
+										<td class="value">
+											<select name="segmentation_values_6[]" id="segmentation_values_6" class="" size="6" multiple="multiple">
+											<?php foreach($mobile as $mobile):?>
+											<option value="<?php echo $mobile?>" <?php if(strstr($formData['segmentation_values'],$mobile) && $formData['segmentation_type']==6) :?> selected <?php endif;?>><?php echo $mobile?></option>									<?php endforeach;?>
+										
+										</td>
+										
+									</tr>
+								</table>
+							</td>
+						</tr>
+						
+						<tr id="personalization_step3" style="display:none;" name="personalization_step3">
+							<?php $adzones_key = Mage::getSingleton('adminhtml/session')->getAdzonesGridKey();
+									$id = $formData['personalization_id'];
+								$adzonesGridUrl = Mage::getBaseUrl()."personalization/adminhtml_personalization/adzonesGrid/id/$id/key/$adzones_key"?>
+							<td id="personalization_adzonesGrid_content">
+								<div id="personalization_adzones_content"></div>
+							</td>
+							<script>setAdzonesGrid('<?php echo $adzonesGridUrl?>');</script>
+						</tr>	
+						<tr id="personalization_step4" style="display:none;" name="personalization_step4">
+							<td><table>
+								<tr>
+									<td class="label"><label for="status"><?php echo $this->__('Status')?></label></td>
+									<td class="value">
+										<select class=" select" name="status" id="status">
+										<option <?php if($formData['status']==1) : ?>selected="selected"<?php endif;?> value="1"><?php echo $this->__('Active')?></option>
+										<option <?php if($formData['status']==2) : ?>selected="selected"<?php endif;?> value="2"><?php echo $this->__('Inactive')?></option>
+										</select>            
+									</td>
+								</tr>
+								<tr>
+									<td class="label"><label for="default"><?php echo $this->__('Set as default personalization')?></label></td>
+									<td class="value">
+										<select class=" select" name="default" id="default">
+										<option <?php if($formData['default']==0) : ?>selected="selected"<?php endif;?> value="0"><?php echo $this->__('No')?></option>
+										<option <?php if($formData['default']==1) : ?>selected="selected"<?php endif;?> value="1"><?php echo $this->__('Yes')?></option>
+										</select>  
+										<p id="note_default" class="note"><span><?php echo $this->__('If You set its value as Yes, then segmentation type will be neglect')?></span></p>          
+									</td>
+								</tr>
+							</table></td>
+						</tr>
+						<tr id="personalization_step5" style="display:none;" name="personalization_step5">
+							<td class="value">
+								<table cellspacing="0" class="form-list" style="min-width:580px;">
+									
+										<?php if($formData['personalization_id']) : ?>
+										<?php $currentTest = Mage::getModel('personalization/abtest')->getPersonalizationtesting($formData['personalization_id']);?>
+										<?php endif;?>
+										<?php if($currentTest) :?>
+										<tr>
+											<th colspan="2" class="label">
+												<?php echo $this->__('Already running testing')?>
+											</th>
+										</tr>
+										
+											<?php foreach($currentTest as $key => $value) : ?>
+										<tr>
+											<td class="label">
+												<?php echo $this->__('Competitor Name')?> - <?php echo $value;?>
+											</td>
+											<td class="value" onclick="changeTestingStatus('<?php echo $this->getUrl('personalization/adminhtml_personalization/stopTesting')?><?php echo 'id/'.$key?>',this);"><a style="cursor:pointer;" ><?php echo $this->__('Stop Testing')?></a></td>
+										</tr>
+											<?php endforeach;?>
+										<?php else : ?>
+									<tr>
+										<td class="label"><label for="ab_test"><?php echo $this->__('A/B Testing')?></label></td>
+										<td class="value">
+										<select class=" select" name="ab_test" id="ab_test">
+										
+										<option <?php if($formData['ab_test']==2) : ?>selected="selected"<?php endif;?> value="2"><?php echo $this->__('Inactive')?></option>
+										<option <?php if($formData['ab_test']==1) : ?>selected="selected"<?php endif;?> value="1"><?php echo $this->__('Active')?></option>
+										</select>            </td>
+									</tr>
+									<tr>
+									<td class="label"><label for="ab_test_start"><?php echo $this->__('A/B Testing Start Date')?></label></td>
+									<td class="value">
+										   <input type="text" name="start_date" id="start_date" value="" class="input-text"/> 
+											<img title="Select date" id="start_date_trig" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN) . 'adminhtml/default/default/images/grid-cal.gif'; ?>"  class="v-middle"/>
+											<script type="text/javascript">
+												Calendar.setup({
+													inputField : 'start_date',
+													ifFormat : "%Y-%m-%d",
+													button : 'start_date_trig',
+													align : 'Bl',
+													singleClick : true,
+										
+												});
+											</script>  
+									</td>
+									</tr>		
+									<tr>
+										<td class="label"><label for="ab_test_end"><?php echo $this->__('A/B Testing End Date')?></label></td>
+										<td class="value">
+												 <input type="text" name="end_date" id="end_date" value="" class="input-text"/> 
+												<img title="Select date" id="end_date_trig" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN) . 'adminhtml/default/default/images/grid-cal.gif'; ?>"  class="v-middle"/>
+														<script type="text/javascript">
+															Calendar.setup({
+																inputField : 'end_date',
+																ifFormat : "%Y-%m-%d",
+																button : 'end_date_trig',
+																align : 'Bl',
+																singleClick : true,
+												
+															});
+														</script>  
+										</td>
+									</tr>
+									<tr>
+										<td class="label"><label for="ab_test_criteria"><?php echo $this->__('Success Criteria')?></label></td>
+										<td class="value">
+											<?php $criteria = Mage::getModel('personalization/criteria')->getOptionArray()?>
+											<select class="select" name="ab_test_criteria" id="ab_test_criteria">
+												<option value=""></option>
+											<?php foreach($criteria as $key => $value) : ?>
+												<option value="<?php echo $key?>"><?php echo $value?></option>
+											<?php endforeach;?>
+											</select>            
+										</td>
+									</tr>
+									<tr>
+										<td class="label"><label for="ab_test_competition"><?php echo $this->__('Competition')?></label></td>
+										<td class="value">
+											<?php $competition = Mage::getModel('personalization/personalization')->getAllAddition()?>
+											<select class="select" name="ab_test_competition" id="ab_test_competition">
+											<?php if($formData['personalization_id']=="") : ?>
+													<option value=""></option>
+											<?php endif;?>
+											<?php foreach($competition as $key => $value) : ?>
+																						
+												<?php if($key!=$formData['personalization_id']):?>
+												<option value="<?php echo $key?>"><?php echo $value?></option>
+												<?php endif;?>	
+											<?php endforeach;?>
+											</select>            
+										</td>
+									</tr>
+									<?php endif;?>	
+									<tr>
+										<td class="value" colspan="3">
+											<span id="businesslicensepathurl"><button onclick="editForm.submit();" class="save" type="button" title="Save Personalization" id="personalization_save"><span><span><span><?php echo $this->__('Save Personalization')?></span></span></span></button></span><div id="custom_msg"></div>            
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<table style="display:none;">
+<tr id="country_tr_0">
+												<td class="label"><label for="segmentation_values_1"><?php echo $this->__('Select Country')?> <span class="required">*</span></label></td>
+												<td class="value">
+													<?php $country = $this->getCountryList() ?>
+													<select class="" id="country_0" name="country[]" onchange="showRegion(this.value,'0');" id="country_0">
+														<?php foreach($country as $country):?>
+
+															<option value="<?php echo $country['value']?>"><?php if($country['label']!=1){echo $country['label'];}?></option>
+														<?php endforeach;?>
+													</select>
+												</td>
+												<td class="value">
+													<button style="" onclick="deleteLocation(this.value)" value="button_remove" class="scalable delete" type="button" title="Delete"><span><span><span><?php echo $this->__('Delete')?></span></span></span></button>
+												</td>
+											</tr>
+											<tr id="region_tr_0" style="display:none;">
+												<td class="label"><label for="segmentation_values_1"><?php echo $this->__('Select State')?> <span class="required">*</span></label></td>
+												<td class="value">
+													<?php $region = $this->getRegionCollection('US')?>
+													<select class="" id="region_0" name="region[]">
+														<?php foreach($region as $region):?>
+
+															<option value="<?php echo $region['name']?>"><?php echo $region['name']?></option>
+														<?php endforeach;?>
+													</select>
+												</td>
+											</tr>
+</table>

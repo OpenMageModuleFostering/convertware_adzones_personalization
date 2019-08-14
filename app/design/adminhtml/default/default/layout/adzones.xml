@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+	<default>
+		<reference name="head">
+			
+			 <action method="addJs"><script>adzones/adzones.js</script></action>
+			 <action method="addJs"><script>adzones/adzones.jquery.min.js</script></action>
+			<action method="addJs"><script>prototype/window.js</script></action>
+		   
+		    <action method="addItem"><type>js_css</type><name>prototype/windows/themes/default.css</name></action>
+		    <action method="addItem"><type>js_css</type><name>prototype/windows/themes/magento.css</name></action>
+			<action method="addJs"><script>mage/adminhtml/rules.js</script></action>
+			<!--<action method="addItem"><type>js</type><name>mage/adminhtml/wysiwyg/tiny_mce/setup.js</name></action>
+ 			<action method="addItem"><type>js</type><name>tiny_mce/tiny_mce.js</name></action>
+		    -->
+		</reference>
+	</default>
+	<convertware_adminhtml>
+		<reference name="head">
+			<action method="addCss"><name>adzones/convertware.css</name></action>
+		</reference>
+	</convertware_adminhtml>
+	<adzones_adminhtml_adzones_productgrid>
+	   <update handle="convertware_adminhtml"/>
+       <block type="core/text_list" name="root" output="toHtml">
+           <block type="adzones/adminhtml_adzones_edit_tab_products" name="product.grid"/>
+           <block type="adminhtml/widget_grid_serializer" name="grid_serializer">
+               <reference name="grid_serializer">
+                   <action method="initSerializerBlock">
+                       <grid_block_name>product.grid</grid_block_name>
+                       <data_callback>getSelectedProducts</data_callback>
+                       <hidden_input_name>links[products]</hidden_input_name>
+                       <reload_param_name>products</reload_param_name>
+                   </action>
+                   <action method="addColumnInputName">
+                       <input_name>position</input_name>
+                   </action>
+               </reference>
+           </block>
+       </block>
+   </adzones_adminhtml_adzones_productgrid>
+	<adzones_adminhtml_adzones_categories>
+		<update handle="convertware_adminhtml"/>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="adzones/adminhtml_adzones_edit_tab_categories" name="adzones.edit.tab.categories"/>
+        </block>
+    </adzones_adminhtml_adzones_categories>
+  	<adzones_adminhtml_adzones_productgridajax>
+			<update handle="convertware_adminhtml"/>
+	        <block type="core/text_list" name="root" output="toHtml">
+	            <block type="adzones/adminhtml_adzones_edit_tab_products" name="product.grid"/>
+	        </block>
+	</adzones_adminhtml_adzones_productgridajax>
+    <adzones_adminhtml_adzones_index>
+		<update handle="convertware_adminhtml"/>
+        <reference name="content">
+            <block type="adzones/adminhtml_adzones" name="adzones" />
+        </reference>
+    </adzones_adminhtml_adzones_index>
+	<adzones_adminhtml_adzones_edit>
+		<update handle="convertware_adminhtml"/>
+    </adzones_adminhtml_adzones_edit>
+	 <adzones_adminhtml_content_edit>
+		<update handle="convertware_adminhtml"/>
+		<reference name="head">
+			
+			<!--<action method="addJs"><script>adzones/adzones.js</script></action>
+			<action method="addItem"><type>js</type><name>mage/adminhtml/wysiwyg/tiny_mce/setup.js</name></action>
+ 			<action method="addItem"><type>js</type><name>tiny_mce/tiny_mce.js</name></action>-->
+		</reference>
+		<remove name="header"/> 
+		<remove name="footer"/>
+        <remove name="menu"/> 
+        <remove name="notifications"/>
+        <update handle="editor"/>
+    </adzones_adminhtml_content_edit>
+
+	<adzones_adminhtml_content_new>
+		<update handle="convertware_adminhtml"/>
+		<reference name="head">
+			<!--<action method="addItem"><type>js</type><name>mage/adminhtml/wysiwyg/tiny_mce/setup.js</name></action>
+ 			<action method="addItem"><type>js</type><name>tiny_mce/tiny_mce.js</name></action>
+		    <action method="addJs"><script>adzones/adzones.js</script></action>-->
+		</reference>
+		<remove name="header"/> 
+		<remove name="footer"/> 
+        <remove name="menu"/>
+        <remove name="notifications"/>
+        <update handle="editor"/>
+    </adzones_adminhtml_content_new>
+</layout>

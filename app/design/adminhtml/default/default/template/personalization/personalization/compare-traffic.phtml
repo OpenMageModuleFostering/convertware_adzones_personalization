@@ -1,0 +1,136 @@
+<?php
+	$personalizationTraffic = $this->getPersonalizationOverview();
+	$siteTraffic = $this->getSiteTraffic();
+?>
+<div class="compare-traffic">
+	<table>
+		<tr>
+			<th class="traffic-heading"><?php echo $this->__('Metrics')?></th>
+			<th class="traffic-heading"><?php echo $this->__('Site Traffic')?></th>
+			<th class="traffic-heading"><?php echo $this->__('Personalization Traffic')?></th>
+			<td>
+				<div class="traffic-indication">
+					<div class="indication"><div class="traffic-status-good-indication"></div><span class="indication-text"><?php echo $this->__('Good Traffic value')?></span></div>
+					<div class="indication"><div class="traffic-status-bad-indication"></div><span class="indication-text"><?php echo $this->__('Bad Traffic value')?></span></div>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div class="traffic-type">
+					<?php echo $this->__('Total Visitors')?>
+				</div>
+			</td>
+			<td>
+				<div class="traffic-values">
+					<div class="traffic-status-<?php echo $this->getApplyClass('visitors')?>"></div>
+					<div class="traffic-claculate-value">
+						<?php echo $siteTraffic['visitors']?>
+					</div>
+				</div>
+			</td>
+			<td>
+				<div class="traffic-status-<?php echo $this->getApplyClassPer('visitors')?>"></div>
+				<div class="traffic-claculate-value">
+					<?php echo $personalizationTraffic['visitors']?>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div class="traffic-type">
+					<?php echo $this->__('Visit Count')?>
+				</div>
+			</td>
+			<td>
+				<div class="traffic-status-<?php echo $this->getApplyClass('total_visit')?>"></div>
+				<div class="traffic-claculate-value">
+					<?php echo $siteTraffic['total_visit']?>
+				</div>
+			</td>
+			<td>
+				<div class="traffic-status-<?php echo $this->getApplyClassPer('total_visit')?>"></div>
+				<div class="traffic-claculate-value">
+					<?php echo $personalizationTraffic['total_visit']?>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div class="traffic-type">
+					<?php echo $this->__('Bounce Rate')?>
+				</div>
+			</td>
+			<td>
+				<div class="traffic-status-<?php echo $this->getApplyClass('bounce_rate')?>"></div>
+				<div class="traffic-claculate-value">
+					<?php echo $siteTraffic['bounce_rate']?>
+				</div>
+			</td>
+			<td>
+				<div class="traffic-status-<?php echo $this->getApplyClassPer('bounce_rate')?>"></div>
+				<div class="traffic-claculate-value">
+					<?php echo $personalizationTraffic['bounce_rate']?>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div class="traffic-type">
+					<?php echo $this->__('Conversions')?>
+				</div>
+			</td>
+			<td>
+				<div class="traffic-status-<?php echo $this->getApplyClass('conversions')?>"></div>
+				<div class="traffic-claculate-value">
+					<?php echo $siteTraffic['conversions']?>
+				</div>
+			</td>
+			<td>
+				<div class="traffic-status-<?php echo $this->getApplyClassPer('conversions')?>"></div>
+				<div class="traffic-claculate-value">
+					<?php echo $personalizationTraffic['conversions']?>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div class="traffic-type">
+					<?php echo $this->__('Conversion Rate')?>
+				</div>
+			</td>
+			<td>
+				<div class="traffic-status-<?php echo $this->getApplyClass('conversion_rate')?>"></div>
+				<div class="traffic-claculate-value">
+					<?php echo $siteTraffic['conversion_rate']?>
+				</div>
+			</td>
+			<td>
+				<div class="traffic-status-<?php echo $this->getApplyClassPer('conversion_rate')?>"></div>
+				<div class="traffic-claculate-value">
+					<?php echo $personalizationTraffic['conversion_rate']?>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div class="traffic-type">
+					<?php echo $this->__('Revenue')?>
+				</div>
+			</td>
+			<td>
+				<div class="traffic-status-<?php echo $this->getApplyClass('revenue')?>"></div>
+				<div class="traffic-claculate-value">
+					<?php echo $siteTraffic['revenue']?>
+				</div>
+			</td>
+			<td>
+				<div class="traffic-status-<?php echo $this->getApplyClassPer('revenue')?>"></div>
+				<div class="traffic-claculate-value">
+					<?php echo $personalizationTraffic['revenue']?>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+		<reference name="head">
+			<action method="addCss"><stylesheet>css/adzones/adzones.css</stylesheet></action>
+		</reference>
+		<reference name="header">
+			<action method='setTemplate'><template>adzones/page/html/header.phtml</template></action>
+			<block type="adzones/adzones" name="adzones.menu.top" template="adzones/menu-top.phtml" />
+			<block type="adzones/adzones" name="adzones.menu.bottom" template="adzones/menu-bottom.phtml" />
+		</reference>
+		<reference name="left">
+			<block type="adzones/adzones" name="adzones.left.top" before="-" template="adzones/left-top.phtml" />
+			<block type="adzones/adzones" name="adzones.left.bottom" after="-" template="adzones/left-bottom.phtml" />
+		</reference>
+		<reference name="right">
+			<block type="adzones/adzones" name="adzones.right.top" before="-" template="adzones/right-top.phtml" />
+			<block type="adzones/adzones" name="adzones.right.bottom" after="-" template="adzones/right-bottom.phtml" />
+		</reference>
+		<reference name="before_body_end">
+			<block type="adzones/adzones" name="adzones.page.bottom" template="adzones/page-bottom.phtml" />
+		</reference>
+    </default>
+	<checkout_cart_index>
+		<reference name="content">
+			<remove name="adzones.content.top"/>
+			<block type="adzones/adzones" name="adzones.cart.top" template="adzones/checkout/content-top.phtml" before="-"/>
+		</reference>
+	</checkout_cart_index>
+	 <checkout_onepage_index>
+		<reference name="content">
+			<remove name="adzones.content.top"/>
+			<block type="adzones/adzones" name="adzones.checkout.cart.top" template="adzones/checkout/content-top.phtml" before="-"/>
+		</reference>
+	 </checkout_onepage_index>
+	 <customer_account>
+		<reference name="content">
+			<remove name="adzones.content.top"/>
+			<block type="adzones/adzones" name="adzones.customer.cart.top" template="adzones/customer/content-top.phtml" before="-"/>
+		</reference>
+	 </customer_account>
+</layout> 

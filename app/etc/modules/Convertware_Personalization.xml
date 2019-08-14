@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Convertware_Personalization>
+            <active>true</active>
+            <codePool>local</codePool>
+			<depends>
+				<Convertware_Adzones />
+			</depends>
+        </Convertware_Personalization>
+    </modules>
+</config> 

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+	<default>
+		<reference name="head">
+		    <action method="addJs"><script>adzones/personalization.js</script></action>
+		</reference>
+	</default>
+	<personalization_adminhtml_personalization_getadzonesgrid>
+		
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="personalization/adminhtml_personalization_personalizationMain_tab_adzonesGrid" name="adzonesGrid.grid"/>
+        </block>
+    </personalization_adminhtml_personalization_getadzonesgrid>
+
+	<personalization_adminhtml_personalization_personalization>
+		 <update handle="convertware_adminhtml"/>
+	</personalization_adminhtml_personalization_personalization>
+	<personalization_adminhtml_personalization_edit>
+		 <update handle="convertware_adminhtml"/>
+	</personalization_adminhtml_personalization_edit>
+
+	<personalization_adminhtml_personalization_adzonesgrid>
+	  
+      <block type="core/text_list" name="root" output="toHtml">
+           <block type="personalization/adminhtml_personalization_personalizationMain_tab_adzonesGrid" name="adzonesGrid.grid"/>
+           <block type="adminhtml/widget_grid_serializer" name="grid_serializer">
+               <reference name="grid_serializer">
+                   <action method="initSerializerBlock">
+                       <grid_block_name>adzonesGrid.grid</grid_block_name>
+                       <data_callback>getSelectedAdzoness</data_callback>
+                       <hidden_input_name>links[adzones]</hidden_input_name>
+                       <reload_param_name>adzoness</reload_param_name>
+                   </action>
+                   <action method="addColumnInputName">
+                       <input_name>position</input_name>
+                   </action>
+               </reference>
+           </block>
+       </block>
+   </personalization_adminhtml_personalization_adzonesgrid>
+</layout>

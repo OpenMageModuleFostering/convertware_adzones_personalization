@@ -1,0 +1,14 @@
+.entry-edit td.td-border{border:1px solid #ff7a01 !important;min-width:250px;}
+.entry-edit table.table-bordering{border-spacing: 10px;}
+.traffic-status-good{float:left;width:100px;height:20px;background-color:#00FF00;border:1px solid #00FF00;color:#fff;}
+.traffic-status-bad{float:left;width:100px;height:20px;background-color:#A52A2A;border:1px solid #A52A2A;color:#fff;}
+.traffic-status-good-indication{float:left;width:15px;height:15px;background-color:#00FF00;border:1px solid #00FF00;color:#fff;margin-top:10px;}
+.traffic-status-bad-indication{float:left;width:15px;height:15px;background-color:#A52A2A;border:1px solid #A52A2A;color:#fff;margin-top:10px;}
+.traffic-type{font-size: 13px;font-weight: 600;}
+.traffic-heading{font-size: 14px;min-width: 150px;padding-top: 20px;white-space: nowrap;}
+.traffic-values{min-width:220px;}
+.traffic-claculate-value{float:left;padding-left:10px; font-size: 12px;font-weight: 600;}
+.traffic-indication{font-size:10px;padding-top:0px;padding-left:10px;font-size:11px;margin-top:10px;}
+.indication-text{margin-left:10px;float:left;margin-top:10px;}
+.indication{min-width: 120px;}
+

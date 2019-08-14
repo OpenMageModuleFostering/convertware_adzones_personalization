@@ -1,0 +1,56 @@
+<config>
+	<tabs>
+		<convertwareconfig translate="label" module="adzones">
+			<label>Convertware Settings</label>
+			<sort_order>100</sort_order>
+		</convertwareconfig>
+	</tabs>
+	<sections>
+		<convertware_options translate="label" module="adzones">
+			<label>Convertware Settings</label>
+			<tab>convertwareconfig</tab>
+			<frontend_type>text</frontend_type>
+			<sort_order>100</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>1</show_in_website>
+			<show_in_store>1</show_in_store>
+			<groups>
+				<settings translate="label">
+					<label>Manage Settings</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>1</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store> 
+					<fields>
+						<enabled translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+					</fields>                 
+				</settings>
+				<license translate="label">
+					<label>License Settings</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>1</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store> 
+					<fields>
+						<license_key translate="label">
+                            <label>License Key</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </license_key>
+					</fields>                 
+				</license>
+			</groups>                    
+		</convertware_options>
+	</sections> 
+</config>

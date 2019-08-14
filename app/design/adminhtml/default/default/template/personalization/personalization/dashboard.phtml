@@ -1,0 +1,146 @@
+<?php $collection = Mage::getModel('personalization/overview')->getOverview();?>
+<?php $performer = Mage::getModel('personalization/abtest')->getBestPerformer();?> 
+<?php $startValue = min($collection);$endValue = max($collection);?>
+<?php $segvalue = "";
+		
+		 foreach($collection as $key => $value):?>
+          <?php $seg = $seg."|".$key;
+				if($segDisplay)
+				$segDisplay = $segDisplay."|".$key;
+				else{
+					$segDisplay = $key;
+				}
+				if($segvalue){
+				$segvalue = $segvalue.",".$value;
+				}
+				else{
+				$segvalue = $value;
+				}
+			?>
+<?php endforeach;?>
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Segmentation', 'Revenue'],
+<?php foreach($collection as $key => $value):?>
+          ['<?php echo $key?>',<?php echo $value?>],
+<?php endforeach;?>
+        ]);
+
+        var options = {
+          title: 'Highest Converting Sources'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+</script>
+
+<?php if(count($performer)>0) : ?>
+<script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+         ['Personalization Id', 'First', 'Second'],
+<?php foreach($performer as $key => $values):?>
+
+          ['<?php echo $key?>',  <?php echo $values[0]?>, <?php echo $values[1]?>],
+<?php endforeach;?>
+        ]);
+        var options = {
+          title: 'Best Performers',
+          hAxis: {title: 'Personalization Ids', titleTextStyle: {color: 'red'}}
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('barchart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+<!--<script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data1 = google.visualization.arrayToDataTable([
+          ['Personalization name', 'Personalization first', 'Personalization second'],
+<?php foreach($performer as $key => $values):?>
+
+          ['<?php echo $key?>',  <?php echo $values[0]?>, <?php echo $values[1]?>],
+<?php endforeach;?>
+        ]);
+		
+        var options = {
+          title: 'Best Performers',
+          vAxis: {title: 'Personalization Ids',  titleTextStyle: {color: 'red'}}
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('barchart_div'));
+        chart.draw(data1, options);
+      }
+    </script>-->
+<?php endif;?>
+<div class="entry-edit">
+    <div class="entry-edit-head">
+		<h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Dashboard information')?></h4>
+		<div class="form-buttons"></div>
+	</div>
+	<div id="bashboard_form" class="fieldset ">
+		<div class="hor-scroll">
+			<table cellspacing="0" class="form-list table-bordering">
+				<tbody>
+					<tr>
+						<th><?php echo $this->__('Highest Converting Sources')?></th>
+						<th><?php echo $this->__('New Additions')?></th>
+					</tr>
+					<tr>
+						<td class="label td-border">
+							<?php if(count($collection)>0) : ?>
+								<div id="chart_div" style="width: 500px; height: 200px;">
+								</div>
+							
+							<?php else :?>
+								<div id="chart_div" style="width: 500px; height: 200px;"><?php echo $this->__('No record(s) found')?>
+								</div>
+							<?php endif;?>
+
+						</td>
+						<td class="value td-border">
+							<?php $newAddition = Mage::getModel('personalization/personalization')->getNewAddition()?>
+							<ul><?php $newAdditionCount = 1;?>
+								<?php foreach($newAddition as $values) : ?>
+								<li><?php echo $newAdditionCount.". ".$values;$newAdditionCount++?></li>
+								<?php endforeach;?>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<th><?php echo $this->__('Best Performers')?></th>
+						<th><?php echo $this->__('A/B Test Winners')?></th>
+					</tr>
+					<tr>
+						<td class="label td-border">
+	
+							<?php if(count($collection)>0) : ?>
+								<div id="barchart_div" style="width: 500px; height: 200px;"></div>
+							<?php else :?>
+								<div id="barchart_div" style="width: 500px; height: 200px;"><?php echo $this->__('No record(s) found')?></div>
+							<?php endif;?>
+						</td>
+						<td class="value td-border">
+							<?php $winner = Mage::getModel('personalization/abtest')->gettestWinner();?>
+							<ul><?php $winnerCount = 1;?>
+								<?php foreach($winner as $values) : ?>
+								<li><?php echo $winnerCount.". ".$values;$winnerCount++?></li>
+								<?php endforeach;?>
+							</ul>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
