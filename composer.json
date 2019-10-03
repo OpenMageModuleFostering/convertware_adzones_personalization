@@ -1,16 +1,19 @@
 {
-    "name": "OpenMageModuleFostering/Convertware_Adzones_Personalization",
+    "name": "OpenMageModuleFostering\/Convertware_Adzones_Personalization",
     "type": "magento-module",
     "license": "Open-Software-License-(OSL)",
     "homepage": "",
     "description": "Convertware offers the ability to create custom zones in your Magento site for advertising messaging. As you'll see in the details to come, designs will be utilized to place a dynamic banner advertising messages that conform and adapt to the users coming to decide.",
     "authors": [
-    {
-        "name": "convertware",
-        "email": "magento.support@medma.in"
-    }
-],
+        {
+            "name": "convertware",
+            "email": "magento.support@medma.in"
+        }
+    ],
     "suggest": {
-        "magento-hackathon/magento-composer-installer": "*"
-    }
+        "magento-hackathon\/magento-composer-installer": "*"
+    },
+    "keywords": [
+        "openmage-module"
+    ]
 }
