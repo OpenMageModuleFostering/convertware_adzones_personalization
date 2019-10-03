@@ -1,3 +1,5 @@
+
+
 ## Original Package Description
 
 Convertware offers the ability to create custom zones in your Magento site for advertising messaging. As you'll see in the details to come, designs will be utilized to place a dynamic banner advertising messages that conform and adapt to the users coming to decide.
